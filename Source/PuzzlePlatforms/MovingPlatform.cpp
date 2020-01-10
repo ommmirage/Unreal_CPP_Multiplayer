@@ -12,13 +12,20 @@ AMovingPlatform::AMovingPlatform()
 void AMovingPlatform::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (HasAuthority())
+	{
+		SetReplicates(true);
+		SetReplicateMovement(true);
+	}
 }
 
 void AMovingPlatform::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (HasAuthority()) {
+	if (HasAuthority()) 
+	{
 		FVector Location = GetActorLocation();
 		Location += FVector(Speed * DeltaTime, 0, 0);
 		SetActorLocation(Location);
