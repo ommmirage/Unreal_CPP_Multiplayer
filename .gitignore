@@ -63,4 +63,4 @@ DerivedDataCache/*
 Content/StarterContent
 
 # Visual Studio
-.vs/
+.vs/*

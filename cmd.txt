@@ -1,0 +1,2 @@
+"C:\Program Files\Epic Games\UE_4.24\Engine\Binaries\Win64\UE4Editor.exe" "C:\Unreal Projects\PuzzlePlatforms\PuzzlePlatforms.uproject" /Game/ThirdPersonCPP/Maps/ThirdPersonExampleMap -server -log
+"C:\Program Files\Epic Games\UE_4.24\Engine\Binaries\Win64\UE4Editor.exe" "C:\Unreal Projects\PuzzlePlatforms\PuzzlePlatforms.uproject" 192.168.1.223:7777 -game -log

@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "PuzzlePlatformsGameInstance.h"
 
 #include "Engine/Engine.h"
@@ -21,6 +20,9 @@ void UPuzzlePlatformsGameInstance::Host()
 	if (!ensure(Engine != nullptr)) return;
 
 	Engine->AddOnScreenDebugMessage(0, 2, FColor::Green, TEXT("Hosting"));
+
+	GetWorld()->ServerTravel("/Game/ThirdPersonCPP/Maps/ThirdPersonExampleMap?listen");
+
 }
 
 void UPuzzlePlatformsGameInstance::Join(FString Address)
