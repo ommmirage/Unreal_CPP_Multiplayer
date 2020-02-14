@@ -16,6 +16,11 @@ bool UMainMenu::Initialize()
 	return true;
 }
 
+void UMainMenu::SetMenuInterface(IMenuInterface* MenuInterface)
+{
+	this->MenuInterface = MenuInterface;
+}
+
 void UMainMenu::HostServer()
 {
 	if (MenuInterface != nullptr)
@@ -23,3 +28,5 @@ void UMainMenu::HostServer()
 		MenuInterface->Host();
 	}
 }
+
+
