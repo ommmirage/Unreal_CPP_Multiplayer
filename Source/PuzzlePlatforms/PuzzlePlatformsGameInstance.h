@@ -32,6 +32,9 @@ public:
 	UFUNCTION(Exec)
 	void Join(FString Address);
 
+	UFUNCTION()
+	void LoadMainMenu();
+
 private:
 	TSubclassOf<class UUserWidget> MenuClass;
 	TSubclassOf<class UUserWidget> GameMenuClass;

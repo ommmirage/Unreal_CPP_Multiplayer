@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "MenuWidget.h"
+#include "Components/Button.h"
 #include "GameMenu.generated.h"
 
 /**
@@ -14,4 +15,19 @@ class PUZZLEPLATFORMS_API UGameMenu : public UMenuWidget
 {
 	GENERATED_BODY()
 	
+protected:
+	virtual bool Initialize();
+
+private:
+	UPROPERTY(meta = (BindWidget))
+		class UButton* CancelBtn;
+
+	UPROPERTY(meta = (BindWidget))
+		class UButton* QuitBtn;
+
+	UFUNCTION()
+		void Cancel();
+
+	UFUNCTION()
+		void Quit();
 };
