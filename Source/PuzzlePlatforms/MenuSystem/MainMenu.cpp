@@ -18,6 +18,9 @@ bool UMainMenu::Initialize()
 	if (!ensure(OpenJoinMenuBtn != nullptr)) return false;
 	OpenJoinMenuBtn->OnClicked.AddDynamic(this, &UMainMenu::OpenJoinMenu);
 
+	if (!ensure(QuitBtn != nullptr)) return false;
+	QuitBtn->OnClicked.AddDynamic(this, &UMainMenu::QuitPressed);
+
 	if (!ensure(BackBtn != nullptr)) return false;
 	BackBtn->OnClicked.AddDynamic(this, &UMainMenu::OpenMainMenu);
 
@@ -57,6 +60,17 @@ void UMainMenu::JoinServer()
 		FString Address = IPAddressField->GetText().ToString();
 		MenuInterface->Join(Address);
 	}
+}
+
+void UMainMenu::QuitPressed()
+{
+	UWorld* World = GetWorld();
+	if (!ensure(World != nullptr)) return;
+
+	APlayerController* PlayerController = World->GetFirstPlayerController();
+	if (!ensure(PlayerController != nullptr)) return;
+
+	PlayerController->ConsoleCommand("quit");
 }
 
 

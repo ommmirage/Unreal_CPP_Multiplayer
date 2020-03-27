@@ -33,7 +33,7 @@ public:
 	void Join(FString Address);
 
 	UFUNCTION()
-	void LoadMainMenu();
+		void LoadMainMenu();
 
 private:
 	TSubclassOf<class UUserWidget> MenuClass;
