@@ -15,6 +15,8 @@
 #include "MenuSystem/MainMenu.h"
 #include "MenuSystem/MenuWidget.h"
 
+const FName SESSION_NAME = TEXT("My Session");
+
 UPuzzlePlatformsGameInstance::UPuzzlePlatformsGameInstance(const FObjectInitializer& ObjectInitializer)
 {
 	ConstructorHelpers::FClassFinder<UUserWidget> MenuBPClass(TEXT("/Game/MenuSystem/WBP_MyMainMenu"));
@@ -37,6 +39,7 @@ void UPuzzlePlatformsGameInstance::Init()
 		SessionInterface = Subsystem->GetSessionInterface();
 		if (SessionInterface.IsValid()){
 			SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformsGameInstance::OnCreateSessionComplete);
+			SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformsGameInstance::OnDestroySessionComplete);
 			UE_LOG(LogTemp, Warning, TEXT("Found session interface."));
 		}
 	}
@@ -68,8 +71,16 @@ void UPuzzlePlatformsGameInstance::Host()
 {
 	if (SessionInterface.IsValid())
 	{
-		FOnlineSessionSettings SessionSettings;
-		SessionInterface->CreateSession(0, TEXT("My session"), SessionSettings);
+		auto ExistingSession = SessionInterface->GetNamedSession(SESSION_NAME);
+		if (ExistingSession == nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("No session exists. Creating session"));
+			CreateSession();
+		}
+		else
+		{
+			SessionInterface->DestroySession(SESSION_NAME);
+		}
 	}
 }
 
@@ -77,7 +88,7 @@ void UPuzzlePlatformsGameInstance::OnCreateSessionComplete(FName SessionName, bo
 {
 	if (!Success)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Could not create session")); // Who sent !Success to OnCreateSessionComplete?
+		UE_LOG(LogTemp, Warning, TEXT("Could not create session"));
 		return;
 	}
 
@@ -93,6 +104,29 @@ void UPuzzlePlatformsGameInstance::OnCreateSessionComplete(FName SessionName, bo
 
 	GetWorld()->ServerTravel("/Game/ThirdPersonCPP/Maps/ThirdPersonExampleMap?listen");
 
+}
+
+void UPuzzlePlatformsGameInstance::OnDestroySessionComplete(FName SessionName, bool Success)
+{
+	if (Success)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Destroyed session"));
+		CreateSession();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Could not destroy session"));
+		return;
+	}
+}
+
+void UPuzzlePlatformsGameInstance::CreateSession()
+{
+	if (SessionInterface.IsValid())
+	{
+		FOnlineSessionSettings SessionSettings;
+		SessionInterface->CreateSession(0, SESSION_NAME, SessionSettings);
+	}	
 }
 
 void UPuzzlePlatformsGameInstance::Join(FString Address)
